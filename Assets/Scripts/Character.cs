@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
         if (FirstPlayTheGame())
         {
             GeneratePlayerPrefs();
-            Debug.Log("Error");
+            Debug.Log("Init PlayerPrefs.");
         }
 
         health = PlayerPrefs.GetInt(Constants.Key_Of_Health);
