@@ -17,16 +17,28 @@ public class Test : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         _draggingIcons[eventData.pointerId].transform.SetParent(_canvas.transform, false);
         _draggingIcons[eventData.pointerId].transform.SetAsLastSibling();
 
+        var image = _draggingIcons[eventData.pointerId].AddComponent<Image>();
+        image.sprite = GetComponent<Image>().sprite;
 
+        _draggingPlanes[eventData.pointerId] = transform as RectTransform;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        var rt = _draggingIcons[eventData.pointerId].GetComponent<RectTransform>();
+        Vector3 globalMousePos;
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_draggingPlanes[eventData.pointerId], eventData.position, eventData.pressEventCamera, out globalMousePos))
+        {
+            rt.position = globalMousePos;
+            rt.rotation = _draggingPlanes[eventData.pointerId].rotation;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        throw new System.NotImplementedException();
+        if (_draggingIcons[eventData.pointerId] != null)
+            Destroy(_draggingIcons[eventData.pointerId]);
+
+        _draggingIcons[eventData.pointerId] = null;
     }
 }

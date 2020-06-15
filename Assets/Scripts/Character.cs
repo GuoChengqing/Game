@@ -8,19 +8,23 @@ public class Character : MonoBehaviour
     public int health;
     public int armor;
     public int attack;
+    public bool _isPlayer = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (FirstPlayTheGame())
+        if (_isPlayer)
         {
-            GeneratePlayerPrefs();
-            Debug.Log("Init PlayerPrefs.");
-        }
+            if (FirstPlayTheGame())
+            {
+                GeneratePlayerPrefs();
+                Debug.Log("Init PlayerPrefs.");
+            }
 
-        health = PlayerPrefs.GetInt(Constants.Key_Of_Health);
-        armor = PlayerPrefs.GetInt(Constants.Key_Of_Armor);
-        attack = PlayerPrefs.GetInt(Constants.Key_Of_Attack);
+            health = PlayerPrefs.GetInt(Constants.Key_Of_Health);
+            armor = PlayerPrefs.GetInt(Constants.Key_Of_Armor);
+            attack = PlayerPrefs.GetInt(Constants.Key_Of_Attack);
+        }
     }
 
     // Update is called once per frame
