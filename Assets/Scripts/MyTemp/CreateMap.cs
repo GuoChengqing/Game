@@ -13,11 +13,12 @@ public class CreateMap : MonoBehaviour
     private const float GridWidth = 2.5f;
     private const int MapMaxIndex = 10;
     private const int NullType = 0;
+    
 
     private static readonly string[] Type = {"Generate Null", "Generate Wall", "Generate Track", "Generate Enemy", "Generate Start Point", "Generate End Point" };
 
     private GameObject[] _generatePrefabs;
-    public GameObject _WallPrefab;
+    public GameObject _wallPrefab;
     public GameObject _TrackPrefab;
     public GameObject _EnemyPrefab;
     public GameObject _StartPointPrefab;
@@ -35,8 +36,9 @@ public class CreateMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GenerateBorder();
         _plane = new Plane(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0));
-        _generatePrefabs = new GameObject[5] {_WallPrefab, _TrackPrefab, _EnemyPrefab, _StartPointPrefab , _EndPointPrefab};
+        _generatePrefabs = new GameObject[5] {_wallPrefab, _TrackPrefab, _EnemyPrefab, _StartPointPrefab , _EndPointPrefab};
         LoadAndGenerateMap();
     }
 
@@ -176,5 +178,28 @@ public class CreateMap : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void GenerateBorder()
+    {
+        int minIndex = -(MapMaxIndex + 1);
+        int maxIndex = -minIndex;
+        float minPositionValue = minIndex * GridWidth;
+        float maxPositionValue = -minPositionValue;
+
+        for (int i = minIndex + 1; i < maxIndex; i++)
+        {
+            float PositionValue = i * GridWidth;
+
+            Instantiate(_wallPrefab, new Vector3(PositionValue, 0, minPositionValue), Quaternion.identity);
+            Instantiate(_wallPrefab, new Vector3(PositionValue, 0, maxPositionValue), Quaternion.identity);
+            Instantiate(_wallPrefab, new Vector3(minPositionValue, 0, PositionValue), Quaternion.identity);
+            Instantiate(_wallPrefab, new Vector3(maxPositionValue, 0, PositionValue), Quaternion.identity);
+        }
+
+        Instantiate(_wallPrefab, new Vector3(minPositionValue, 0, minPositionValue), Quaternion.identity);
+        Instantiate(_wallPrefab, new Vector3(minPositionValue, 0, maxPositionValue), Quaternion.identity);
+        Instantiate(_wallPrefab, new Vector3(maxPositionValue, 0, maxPositionValue), Quaternion.identity);
+        Instantiate(_wallPrefab, new Vector3(maxPositionValue, 0, minPositionValue), Quaternion.identity);
     }
 }
