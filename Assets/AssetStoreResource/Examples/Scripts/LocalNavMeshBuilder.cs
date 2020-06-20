@@ -24,6 +24,7 @@ public class LocalNavMeshBuilder : MonoBehaviour
         while (true)
         {
             UpdateNavMesh(true);
+            Debug.Log("abc");
             yield return m_Operation;
         }
     }
