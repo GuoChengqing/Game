@@ -15,7 +15,7 @@ public class CreateMap : MonoBehaviour
     private const int NullType = 0;
     
 
-    private static readonly string[] Type = {"Generate Null", "Generate Wall", "Generate Track", "Generate Enemy", "Generate Start Point", "Generate End Point" };
+    private static readonly string[] Type = {"Generate Null", "Generate Wall", "Generate Track", "Generate Enemy", "Generate Start Point", "Generate End Point", "Generate Heal Object" };
 
     private GameObject[] _generatePrefabs;
     public GameObject _wallPrefab;
@@ -23,6 +23,7 @@ public class CreateMap : MonoBehaviour
     public GameObject _EnemyPrefab;
     public GameObject _StartPointPrefab;
     public GameObject _EndPointPrefab;
+    public GameObject healPrefab;
 
     private Plane _plane;
     public GameObject _levelObject;
@@ -38,7 +39,7 @@ public class CreateMap : MonoBehaviour
     {
         GenerateBorder();
         _plane = new Plane(new Vector3(0, 0, 0), new Vector3(0, 0, 1), new Vector3(1, 0, 0));
-        _generatePrefabs = new GameObject[5] {_wallPrefab, _TrackPrefab, _EnemyPrefab, _StartPointPrefab , _EndPointPrefab};
+        _generatePrefabs = new GameObject[6] {_wallPrefab, _TrackPrefab, _EnemyPrefab, _StartPointPrefab , _EndPointPrefab, healPrefab};
         LoadAndGenerateMap();
     }
 

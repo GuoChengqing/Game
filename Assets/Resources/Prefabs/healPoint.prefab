@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1214518039249267962}
   - component: {fileID: 6443132705699994650}
   m_Layer: 0
-  m_Name: healObejct
-  m_TagString: Untagged
+  m_Name: healPoint
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

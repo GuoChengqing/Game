@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InitProcess : MonoBehaviour
 {
-    private const string NotNewGameSignal = "_";
+    private const string NotNewGameSignal = "s_";
     public PlayManager playManager;
 
     void Start()
@@ -17,6 +17,12 @@ public class InitProcess : MonoBehaviour
 
         playManager.map.GenerateBorder();
         playManager.map.GenerateMap(playManager.player.currentLevel);
+        playManager.map.SetCurrentPlayerPosition(playManager.player.transform.position);
+    }
+
+    private bool IsChangeLevel()
+    {
+        return Message.message.StartsWith("l_");
     }
 
     private void LoadDefaultData()

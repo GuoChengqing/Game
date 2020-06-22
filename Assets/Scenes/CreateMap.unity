@@ -211,6 +211,8 @@ MonoBehaviour:
     type: 3}
   _EndPointPrefab: {fileID: 374340932644207852, guid: 55942a2e566b533469ff6dc039cb3374,
     type: 3}
+  healPrefab: {fileID: 5681412971070658167, guid: 6184cffcdb0e7eb45bd58c39e65dc07f,
+    type: 3}
   _levelObject: {fileID: 256177631}
   _TypeField: {fileID: 195086978}
 --- !u!1 &195086976
