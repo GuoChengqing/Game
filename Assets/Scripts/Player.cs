@@ -1,18 +1,37 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : Character1
 {
     public int maxHealth;
     public int currentLevel;
 
-    public Player(int currentHealth, int maxHealth, int armor, int attack, int currentLevel)
+    private NavMeshAgent agent;
+
+    private void Awake()
     {
-        this.currentHealth = currentHealth;
-        this.maxHealth = maxHealth;
-        this.armor = armor;
-        this.attack = attack;
-        this.currentLevel = currentLevel;
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    public void Load(string file)
+    {
+        using (var filestream = File.Open(file, FileMode.Open))
+            using (var binarystream = new BinaryReader(filestream))
+        {
+            currentHealth = binarystream.ReadInt32();
+            maxHealth = binarystream.ReadInt32();
+            armor = binarystream.ReadInt32();
+            attack = binarystream.ReadInt32();
+            currentLevel = binarystream.ReadInt32();
+        }
+    }
+
+    internal void SetDestination(Vector3 point)
+    {
+        agent.destination = point;
     }
 }

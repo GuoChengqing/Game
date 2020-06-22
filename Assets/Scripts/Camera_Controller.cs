@@ -12,18 +12,35 @@ public class Camera_Controller : MonoBehaviour
     public float limitedMinY = 5f;
     public float limitedMaxY = 300f;
 
+    private bool isBlock = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
     }
 
     // Update is called once per frame
     void Update()
     {
-        CameraMove(Input.mousePosition);
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            isBlock = !isBlock;
 
-        CameraZomm(Input.GetAxis("Mouse ScrollWheel"));
+            if (isBlock)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            } else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+
+        if (!isBlock)
+        {
+            CameraMove(Input.mousePosition);
+
+            CameraZomm(Input.GetAxis("Mouse ScrollWheel"));
+        }
     }
 
     private void CameraZomm(float zoom)
