@@ -9,6 +9,8 @@ public class PlayManager : MonoBehaviour
     public Map map;
     public Player player;
 
+    private bool block = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +22,22 @@ public class PlayManager : MonoBehaviour
     {
         ClickToMove();
 
-        if (map.GotoNewGrid(player.transform.position))
+        if (block)
         {
+            if (map.IsGotoNewGrid(player.transform.position))
+            {
+                Debug.Log("Error");
+                player.transform.position = map.GetPlayerCurrentPosition(player.transform.position.y);
+                player.SetDestination(player.transform.position);
+            } else
+            {
+                block = !block;
+            }
+        }
+
+        else if ( map.IsGotoNewGrid(player.transform.position))
+        {
+            map.GotoNewGrid(player.transform.position);
             Handle(player, map.GetCurrentPositionType());
         }
     }
@@ -49,24 +65,32 @@ public class PlayManager : MonoBehaviour
         {
             if (player.currentLevel != 1)
             {
-                map.SaveMapInfo(player.currentLevel);
+                block = true;
 
+                map.SaveMapInfo(player.currentLevel);
                 player.currentLevel -= 1;
                 map.DestoryMap();
                 map.GenerateMap(player.currentLevel);
                 map.SetPlayerToStartPointPosition(player);
+                Debug.Log(player.transform.position + "[[[");
+                //player.GetComponent<NavMeshAgent>().updatePosition = true;
             }
         }
 
         if (type == TempConstant.EndPointType)
         {
+
+            block = true;
+
             map.SaveMapInfo(player.currentLevel);
 
             player.currentLevel += 1;
             map.DestoryMap();
-
             map.GenerateMap(player.currentLevel);
             map.SetPlayerToStartPointPosition(player);
+
+            Debug.Log(player.transform.position + "[[[");
+            //player.GetComponent<NavMeshAgent>().updatePosition = true;
         }
     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using TMPro;
+using UnityEngine.AI;
 
 public class Map : MonoBehaviour
 {
@@ -35,6 +36,13 @@ public class Map : MonoBehaviour
         healPrefab = Resources.Load("Prefabs/healPoint", typeof(GameObject)) as GameObject;
 
         prefabs = new GameObject[6] { wallPrefab, trackPrefab, enemyPrefab, startPointPrefab, endPointPrefab, healPrefab };
+    }
+
+    internal void GotoNewGrid(Vector3 position)
+    {
+        Helper.GridPoint gridPoint = Helper.PositionToGridPoint(position);
+        playerCurrentPoint.x = gridPoint.x;
+        playerCurrentPoint.y = gridPoint.y;
     }
 
     internal void SaveMapInfo(int currentLevel)
@@ -74,8 +82,28 @@ public class Map : MonoBehaviour
 
     internal void SetPlayerToStartPointPosition(Player player)
     {
-        player.transform.position = Helper.GridPointToPosition(startPoint, 0.6f);
-        playerCurrentPoint = startPoint;
+        Debug.Log("before player position: " + player.transform.position);
+
+        //player.GetComponent<NavMeshAgent>().updatePosition = false;
+        player.gameObject.transform.rotation = Quaternion.identity;
+        Vector3 position = Helper.GridPointToPosition(startPoint, player.transform.position.y);
+        Vector3 movement = position - player.transform.position;
+        playerCurrentPoint.x = startPoint.x;
+        playerCurrentPoint.y = startPoint.y;
+        player.transform.position = position;
+        Debug.Log("later player position1" + player.gameObject.transform.position);
+
+
+        //player.GetComponent<NavMeshAgent>().Move(position - player.transform.position);
+        player.SetDestination(player.transform.position);
+
+        Debug.Log("Des position: " + Helper.GridPointToPosition(startPoint, 0.55f));
+        Debug.Log("later player position2" + player.gameObject.transform.position);
+        Debug.Log("movement: " + movement);
+
+        //player.GetComponent<NavMeshAgent>().updatePosition = true;
+
+        //Debug.Log("After updatePostion: " + player.transform.position);
     }
 
     internal void Load(string defaultMapInfoDirectory)
@@ -102,8 +130,6 @@ public class Map : MonoBehaviour
 
     internal void GenerateMap(int currentLevel)
     {
-        Debug.Log("currentLevel: " + currentLevel);
-
         using (var filestream = File.Open(cacheMapPath + "map" + currentLevel + ".bin", FileMode.Open))
         using (var binaryStream = new BinaryReader(filestream))
         {
@@ -162,14 +188,15 @@ public class Map : MonoBehaviour
         Instantiate(borderPrefab, new Vector3(borderRightAndAboveValue, 0, borderLeftAndBottomValue), Quaternion.identity).transform.SetParent(this.transform);
     }
 
-    internal bool GotoNewGrid(Vector3 position)
+    internal bool IsGotoNewGrid(Vector3 position)
     {
         Helper.GridPoint gridPoint = Helper.PositionToGridPoint(position);
 
         if (Helper.IsEqual(gridPoint, playerCurrentPoint))
             return false;
 
-        playerCurrentPoint = gridPoint;
+        //playerCurrentPoint.x = gridPoint.x;
+        //playerCurrentPoint.y = gridPoint.y;
         return true;
     }
     internal void SetCurrentPlayerPosition(Vector3 position)
@@ -181,4 +208,10 @@ public class Map : MonoBehaviour
     {
         return gridType[playerCurrentPoint.x, playerCurrentPoint.y];
     }
+
+    internal Vector3 GetPlayerCurrentPosition(float y)
+    {
+        return Helper.GridPointToPosition(playerCurrentPoint, y);
+    }
+
 }

@@ -15,7 +15,7 @@ public class SaveManager : MonoBehaviour
         saveNameList = GetAllSavesPath();
 
         using (var filestream = File.Open(saveNameList[0], FileMode.Open))
-            using (var binarystream = new BinaryReader(filestream))
+        using (var binarystream = new BinaryReader(filestream))
         {
             player.currentHealth = binarystream.ReadInt32();
             player.maxHealth = binarystream.ReadInt32();
@@ -33,8 +33,6 @@ public class SaveManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
 
-    
+    }
 }

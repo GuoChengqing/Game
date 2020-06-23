@@ -18,6 +18,8 @@ public class InitProcess : MonoBehaviour
         playManager.map.GenerateBorder();
         playManager.map.GenerateMap(playManager.player.currentLevel);
         playManager.map.SetCurrentPlayerPosition(playManager.player.transform.position);
+
+        Destroy(this.gameObject);
     }
 
     private bool IsChangeLevel()
@@ -34,6 +36,7 @@ public class InitProcess : MonoBehaviour
         GameObject playerPrefab = Resources.Load(TempConstant.playerPrefab, typeof(GameObject)) as GameObject;
         GameObject playerObject = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         Player player = playerObject.AddComponent<Player>();
+        playerObject.transform.SetParent(map.transform);
         playManager.GetComponent<PlayManager>().player = player;
         player.Load(Application.dataPath + TempConstant.defaultPlayerInfoFile);
 
